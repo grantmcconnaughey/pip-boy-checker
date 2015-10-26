@@ -1,17 +1,31 @@
+#!/usr/bin/env python
+import argparse
 import os
-from pprint import pprint
 import smtplib
+import sys
 import time
 
 import praw
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--email', type=str,
+                    help='Your email')
+parser.add_argument('--password', type=str,
+                    help='Your email password')
+args = parser.parse_args()
 
-USER_AGENT = 'pip_boy_checker at https://github.com/grantmcconnaughey/pip-boy-checker'
+if not args.email or not args.password:
+    print 'Missing email or password'
+    print 'Usage: python pipboychecker.py --email myemail@gmail.com --password hunter1'
+    sys.exit()
+
+
+USER_AGENT = 'pip_boy_checker for ' + args.email
 SUBMISSIONS_TO_CHECK = 20
 SEARCH_WORDS = ['pip boy', 'pip-boy', 'in stock', 'in-stock']
 SECONDS_BETWEEN_CHECKS = 60
-GMAIL_USER = os.environ['GMAIL_USER']
-GMAIL_PWD = os.environ['GMAIL_PWD']
+GMAIL_USER = args.email
+GMAIL_PWD = args.password
 
 # A list of submission ids where a search word match was found.
 matches = []
@@ -30,7 +44,7 @@ def check_subreddit(subreddit):
 
 
 def send_success_email(url):
-    to = ['grantmcconnaughey@gmail.com']
+    to = [args.email]
     from_email = GMAIL_USER
     pwd = GMAIL_PWD
     subject = 'Pip-Boy Checker found a match'
