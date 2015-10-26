@@ -6,7 +6,7 @@ import time
 import praw
 
 
-USER_AGENT = 'pip_boy_checker by grant'
+USER_AGENT = 'pip_boy_checker at https://github.com/grantmcconnaughey/pip-boy-checker'
 SUBMISSIONS_TO_CHECK = 20
 SEARCH_WORDS = ['pip boy', 'pip-boy', 'in stock', 'in-stock', 'truth']
 SECONDS_BETWEEN_CHECKS = 60
