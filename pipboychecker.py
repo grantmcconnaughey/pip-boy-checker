@@ -51,8 +51,13 @@ def send_success_email(url):
 def main():
     while True:
         r = praw.Reddit(user_agent=USER_AGENT)
+
         fo4 = r.get_subreddit('fo4')
         check_subreddit(fo4)
+
+        fallout = r.get_subreddit('fallout')
+        check_subreddit(fallout)
+
         time.sleep(SECONDS_BETWEEN_CHECKS)
 
 
