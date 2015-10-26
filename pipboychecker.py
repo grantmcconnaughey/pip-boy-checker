@@ -18,12 +18,13 @@ matches = []
 
 
 def check_subreddit(subreddit):
-    for submission in subreddit.get_hot(limit=SUBMISSIONS_TO_CHECK):
+    for submission in subreddit.get_new(limit=SUBMISSIONS_TO_CHECK):
         found = False
         for word in SEARCH_WORDS:
             if word.lower() in submission.title.lower():
                 found = True
         if found and submission.id not in matches:
+            print 'Found a match! ({})'.format(submission.permalink)
             send_success_email(submission.permalink)
             matches.append(submission.id)
 
@@ -32,8 +33,8 @@ def send_success_email(url):
     to = ['grantmcconnaughey@gmail.com']
     from_email = GMAIL_USER
     pwd = GMAIL_PWD
-    subject = 'Pip Boy edition in stock!'
-    body = 'Pip Boy edition in stock! See ' + url
+    subject = 'Pip-Boy Checker found a match'
+    body = 'Pip-Boy Checker found a match, so the Pip-Boy edition might be in stock!\n\nSee ' + url
 
     message = """\From: %s\nTo: %s\nSubject: %s\n\n%s
     """ % (from_email, ", ".join(to), subject, body)
@@ -56,11 +57,14 @@ def main():
             fo4 = r.get_subreddit('fo4')
             check_subreddit(fo4)
 
+            # Delay between API calls
+            time.sleep(3)
+
             fallout = r.get_subreddit('fallout')
             check_subreddit(fallout)
-        except:
+        except Exception as e:
             # Reddit might be down or something. Just ignore it and try again.
-            pass
+            print 'An exception occurred: ' + str(e)
 
         time.sleep(SECONDS_BETWEEN_CHECKS)
 
