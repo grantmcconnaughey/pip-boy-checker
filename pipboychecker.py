@@ -8,7 +8,7 @@ import praw
 
 USER_AGENT = 'pip_boy_checker at https://github.com/grantmcconnaughey/pip-boy-checker'
 SUBMISSIONS_TO_CHECK = 20
-SEARCH_WORDS = ['pip boy', 'pip-boy', 'in stock', 'in-stock', 'truth']
+SEARCH_WORDS = ['pip boy', 'pip-boy', 'in stock', 'in-stock']
 SECONDS_BETWEEN_CHECKS = 60
 GMAIL_USER = os.environ['GMAIL_USER']
 GMAIL_PWD = os.environ['GMAIL_PWD']
