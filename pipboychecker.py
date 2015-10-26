@@ -50,13 +50,17 @@ def send_success_email(url):
 
 def main():
     while True:
-        r = praw.Reddit(user_agent=USER_AGENT)
+        try:
+            r = praw.Reddit(user_agent=USER_AGENT)
 
-        fo4 = r.get_subreddit('fo4')
-        check_subreddit(fo4)
+            fo4 = r.get_subreddit('fo4')
+            check_subreddit(fo4)
 
-        fallout = r.get_subreddit('fallout')
-        check_subreddit(fallout)
+            fallout = r.get_subreddit('fallout')
+            check_subreddit(fallout)
+        except:
+            # Reddit might be down or something. Just ignore it and try again.
+            pass
 
         time.sleep(SECONDS_BETWEEN_CHECKS)
 
