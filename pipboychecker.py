@@ -24,11 +24,23 @@ USER_AGENT = 'pip_boy_checker for ' + args.email
 SUBMISSIONS_TO_CHECK = 20
 SEARCH_WORDS = ['pip boy', 'pip-boy', 'in stock', 'in-stock']
 SECONDS_BETWEEN_CHECKS = 60
-GMAIL_USER = args.email
-GMAIL_PWD = args.password
+EMAIL_USER = args.email
+EMAIL_PWD = args.password
 
 # A list of submission ids where a search word match was found.
 matches = []
+
+
+def match_smtp(email):
+   domain = email.split('@')[-1]
+   if domain == 'gmail.com':
+       return ('smtp.gmail.com', 587)
+   elif domain == 'outlook.com':
+	return ('smtp-mail.outlook.com', 587)
+   elif domain == 'hotmail.com' or domain == 'live.com':
+	return ('smtp.live.com', 587)
+   elif domain == 'yahoo.com':
+	return ('smtp.mail.yahoo.com', 465)
 
 
 def check_subreddit(subreddit):
@@ -45,15 +57,15 @@ def check_subreddit(subreddit):
 
 def send_success_email(url):
     to = [args.email]
-    from_email = GMAIL_USER
-    pwd = GMAIL_PWD
+    from_email = EMAIL_USER
+    pwd = EMAIL_PWD
     subject = 'Pip-Boy Checker found a match'
     body = 'Pip-Boy Checker found a match, so the Pip-Boy edition might be in stock!\n\nSee ' + url
 
-    message = """\From: %s\nTo: %s\nSubject: %s\n\n%s
-    """ % (from_email, ", ".join(to), subject, body)
+    message = ('From: %s\nTo: %s\nSubject: %s\n\n%s'
+               % (from_email, ", ".join(to), subject, body))
     try:
-        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server = smtplib.SMTP(*match_smtp(EMAIL_USER))
         server.ehlo()
         server.starttls()
         server.login(from_email, pwd)
