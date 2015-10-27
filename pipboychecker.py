@@ -38,9 +38,9 @@ def match_smtp(email):
     elif domain == 'outlook.com':
         return ('smtp-mail.outlook.com', 587)
     elif domain == 'hotmail.com' or domain == 'live.com':
-	    return ('smtp.live.com', 587)
+        return ('smtp.live.com', 587)
     elif domain == 'yahoo.com':
-	    return ('smtp.mail.yahoo.com', 465)
+        return ('smtp.mail.yahoo.com', 465)
 
 
 def check_subreddit(subreddit):
