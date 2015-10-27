@@ -15,8 +15,8 @@ parser.add_argument('--password', type=str,
 args = parser.parse_args()
 
 if not args.email or not args.password:
-    print 'Missing email or password'
-    print 'Usage: python pipboychecker.py --email myemail@gmail.com --password hunter1'
+    print('Missing email or password')
+    print('Usage: python pipboychecker.py --email myemail@gmail.com --password hunter1')
     sys.exit()
 
 
@@ -32,15 +32,15 @@ matches = []
 
 
 def match_smtp(email):
-   domain = email.split('@')[-1]
-   if domain == 'gmail.com':
-       return ('smtp.gmail.com', 587)
-   elif domain == 'outlook.com':
-	return ('smtp-mail.outlook.com', 587)
-   elif domain == 'hotmail.com' or domain == 'live.com':
-	return ('smtp.live.com', 587)
-   elif domain == 'yahoo.com':
-	return ('smtp.mail.yahoo.com', 465)
+    domain = email.split('@')[-1]
+    if domain == 'gmail.com':
+        return ('smtp.gmail.com', 587)
+    elif domain == 'outlook.com':
+        return ('smtp-mail.outlook.com', 587)
+    elif domain == 'hotmail.com' or domain == 'live.com':
+	    return ('smtp.live.com', 587)
+    elif domain == 'yahoo.com':
+	    return ('smtp.mail.yahoo.com', 465)
 
 
 def check_subreddit(subreddit):
@@ -50,7 +50,7 @@ def check_subreddit(subreddit):
             if word.lower() in submission.title.lower():
                 found = True
         if found and submission.id not in matches:
-            print 'Found a match! ({})'.format(submission.permalink)
+            print('Found a match! ({})'.format(submission.permalink))
             send_success_email(submission.permalink)
             matches.append(submission.id)
 
@@ -72,7 +72,7 @@ def send_success_email(url):
         server.sendmail(from_email, to, message)
         server.close()
     except Exception as e:
-        print 'Failed to send mail ' + str(e)
+        print('Failed to send mail ' + str(e))
 
 
 def main():
@@ -90,7 +90,7 @@ def main():
             check_subreddit(fallout)
         except Exception as e:
             # Reddit might be down or something. Just ignore it and try again.
-            print 'An exception occurred: ' + str(e)
+            print('An exception occurred: ' + str(e))
 
         time.sleep(SECONDS_BETWEEN_CHECKS)
 
